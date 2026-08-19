@@ -1,0 +1,80 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.9.x
+
+      - name: Terraform Init
+        run: terraform init -backend=false
+
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: Generate Changelog
+        id: changelog
+        run: |
+          echo "CHANGELOG<<EOF" >> $GITHUB_OUTPUT
+          git log --pretty=format:"- %s (%h)" $(git describe --tags --abbrev=0 HEAD^)..HEAD >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: Release ${{ github.ref_name }}
+          body: |
+            ## Terraform Proxmox k3s Module ${{ github.ref_name }}
+
+            ${{
+            steps.changelog.outputs.CHANGELOG
+            }}
+
+            ## Usage
+
+            ```hcl
+            module "k3s_master" {
+              source  = "Goliohs/proxmox-k3s"
+              version = "${{ github.ref_name }}"
+
+              # ... configuration
+            }
+            ```
+
+            See [examples/master](examples/master) and [examples/worker](examples/worker) for complete examples.
+
+            ## Requirements
+
+            - Terraform >= 1.6.0
+            - Proxmox provider >= 0.60.0
+            - Proxmox VE 7.x or 8.x
+
+            ## License
+
+            MIT
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish to Registry
+        if: false  # Enable when ready to publish to Terraform Registry
+        run: |
+          echo "Publishing to Terraform Registry..."
+          # terraform login
+          # terraform providers publish -registry-name=github.com/Goliohs/proxmox-k3s
