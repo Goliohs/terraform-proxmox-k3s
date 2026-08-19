@@ -3,13 +3,8 @@ variable "proxmox_api_url" {
   type        = string
 }
 
-variable "proxmox_user" {
-  description = "Proxmox API user (e.g., terraform@pam)"
-  type        = string
-}
-
-variable "proxmox_password" {
-  description = "Proxmox API password or token secret"
+variable "proxmox_api_token" {
+  description = "Proxmox API token (format: USER@REALM!TOKENID=UUID)"
   type        = string
   sensitive   = true
 }
