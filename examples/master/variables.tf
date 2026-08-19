@@ -3,14 +3,13 @@ variable "proxmox_api_url" {
   type        = string
 }
 
-variable "proxmox_token_id" {
-  description = "Proxmox API token ID"
+variable "proxmox_user" {
+  description = "Proxmox API user"
   type        = string
-  sensitive   = true
 }
 
-variable "proxmox_token_secret" {
-  description = "Proxmox API token secret"
+variable "proxmox_password" {
+  description = "Proxmox API password"
   type        = string
   sensitive   = true
 }

@@ -23,12 +23,15 @@ jobs:
         with:
           terraform_version: 1.9.x
           terraform_wrapper: true
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
       - name: Terraform Format
         run: terraform fmt -check -recursive -diff
 
       - name: Terraform Init
-        run: terraform init -backend=false
+        run: terraform init -backend=false -plugin-dir=.terraform/plugins
+        env:
+          TF_PLUGIN_CACHE_DIR: ""
 
       - name: Terraform Validate
         run: terraform validate
@@ -36,13 +39,13 @@ jobs:
       - name: Terraform Validate (examples/master)
         run: |
           cd examples/master
-          terraform init -backend=false
+          terraform init -backend=false -plugin-dir=.terraform/plugins
           terraform validate
 
       - name: Terraform Validate (examples/worker)
         run: |
           cd examples/worker
-          terraform init -backend=false
+          terraform init -backend=false -plugin-dir=.terraform/plugins
           terraform validate
 
       - name: Check docs
