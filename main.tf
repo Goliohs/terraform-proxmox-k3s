@@ -1,18 +1,3 @@
-terraform {
-  required_version = ">= 1.6.0"
-
-  required_providers {
-    proxmox = {
-      source  = "bpg/proxmox"
-      version = ">= 0.60.0"
-    }
-    random = {
-      source  = "hashicorp/random"
-      version = ">= 3.6.0"
-    }
-  }
-}
-
 resource "proxmox_vm_qemu" "vm" {
   count = var.create ? 1 : 0
 
@@ -123,41 +108,4 @@ resource "null_resource" "k3s_install" {
       "echo 'export KUBECONFIG=/home/${var.ci_user}/.kube/config' >> /home/${var.ci_user}/.bashrc",
     ]
   }
-}
-
-output "vm_id" {
-  description = "VM ID in Proxmox"
-  value       = var.create ? proxmox_vm_qemu.vm[0].vm_id : null
-}
-
-output "vm_name" {
-  description = "VM name"
-  value       = var.create ? proxmox_vm_qemu.vm[0].name : null
-}
-
-output "vm_target_node" {
-  description = "Proxmox node where VM is deployed"
-  value       = var.create ? proxmox_vm_qemu.vm[0].target_node : null
-}
-
-output "vm_ip_mgmt" {
-  description = "Management/k8s API IP"
-  value       = var.create ? proxmox_vm_qemu.vm[0].ipconfig0 : null
-}
-
-output "k3s_token" {
-  description = "k3s cluster token"
-  value       = var.k3s_token
-  sensitive   = true
-}
-
-output "role" {
-  description = "Node role"
-  value       = var.role
-}
-
-output "generated_password" {
-  description = "Generated VM password (if enabled)"
-  value       = var.create && var.generate_password ? random_password.vm_password[0].result : null
-  sensitive   = true
 }
