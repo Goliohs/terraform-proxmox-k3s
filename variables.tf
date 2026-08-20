@@ -138,7 +138,7 @@ variable "node_ip" {
 # Network configuration
 variable "network_interfaces" {
   description = "Network interfaces for the VM"
-  type        = list(object({
+  type = list(object({
     bridge   = string
     model    = optional(string, "virtio")
     vlan     = optional(number)
@@ -146,8 +146,8 @@ variable "network_interfaces" {
     firewall = optional(bool, false)
   }))
   default = [
-    { bridge = "vmbr0", vlan = 20 },  # k8s-mgmt VLAN
-    { bridge = "vmbr0", vlan = 30 },  # ceph-public VLAN
+    { bridge = "vmbr0", vlan = 20 }, # k8s-mgmt VLAN
+    { bridge = "vmbr0", vlan = 30 }, # ceph-public VLAN
   ]
 }
 

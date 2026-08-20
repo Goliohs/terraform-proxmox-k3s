@@ -25,29 +25,29 @@ resource "proxmox_virtual_environment_vm" "vm" {
   }
 
   disk {
-    interface     = "scsi"
-    datastore_id  = var.storage
-    size          = "${var.disk_size_gb}G"
-    iothread      = true
-    discard       = "on"
-    ssd           = true
-    backup        = true
+    interface    = "scsi"
+    datastore_id = var.storage
+    size         = "${var.disk_size_gb}G"
+    iothread     = true
+    discard      = "on"
+    ssd          = true
+    backup       = true
   }
 
   network_device {
-    bridge       = var.network_interfaces[0].bridge
-    model        = var.network_interfaces[0].model
-    vlan_id      = var.network_interfaces[0].vlan
-    mac_address  = var.network_interfaces[0].mac
-    firewall     = var.network_interfaces[0].firewall
+    bridge      = var.network_interfaces[0].bridge
+    model       = var.network_interfaces[0].model
+    vlan_id     = var.network_interfaces[0].vlan
+    mac_address = var.network_interfaces[0].mac
+    firewall    = var.network_interfaces[0].firewall
   }
 
   initialization {
-    interface  = "ide2"
+    interface    = "ide2"
     datastore_id = var.storage
     dns {
-      domain   = var.search_domain
-      servers  = var.dns_servers
+      domain  = var.search_domain
+      servers = var.dns_servers
     }
     ip_config {
       ipv4 {
@@ -114,8 +114,8 @@ resource "null_resource" "k3s_install" {
         var.k3s_version,
         var.k3s_token,
         var.role == "master"
-          ? "server --cluster-init --disable=traefik --disable=servicelb --flannel-backend=none --disable-network-policy --node-ip=${var.node_ip} --node-external-ip=${var.node_ip} --tls-san=${var.node_ip} --tls-san=${var.name} --tls-san=k3s.${var.search_domain} --write-kubeconfig-mode=644"
-          : "agent --server https://${var.k3s_master_ip}:6443 --node-ip=${var.node_ip} --node-external-ip=${var.node_ip}"
+        ? "server --cluster-init --disable=traefik --disable=servicelb --flannel-backend=none --disable-network-policy --node-ip=${var.node_ip} --node-external-ip=${var.node_ip} --tls-san=${var.node_ip} --tls-san=${var.name} --tls-san=k3s.${var.search_domain} --write-kubeconfig-mode=644"
+        : "agent --server https://${var.k3s_master_ip}:6443 --node-ip=${var.node_ip} --node-external-ip=${var.node_ip}"
       ),
       "mkdir -p /home/${var.ci_user}/.kube",
       "sudo cp /etc/rancher/k3s/k3s.yaml /home/${var.ci_user}/.kube/config",
