@@ -21,20 +21,24 @@ provider "proxmox" {
 module "worker_1" {
   source = "../../"
 
-  create       = true
-  vm_id        = 200
-  name         = "k3s-worker-1"
-  target_node  = "proxmox-node-1"
-  role         = "worker"
-  cpu_cores    = 16
-  memory_mb    = 65536
-  disk_size_gb = 200
-  storage      = "local-lvm"
+  create              = true
+  vm_id               = 200
+  name                = "k3s-worker-1"
+  target_node         = "proxmox-node-1"
+  role                = "worker"
+  cpu_cores           = 16
+  memory_mb           = 65536
+  disk_size_gb        = 200
+  storage             = "local-lvm"
 
-  k3s_version   = "v1.29.6+k3s1"
-  k3s_token     = var.k3s_token
-  k3s_master_ip = var.k3s_master_ip
-  node_ip       = "10.10.20.120"
+  k3s_version         = "v1.29.6+k3s1"
+  k3s_token           = var.k3s_token
+  k3s_master_ip       = var.k3s_master_ip
+  node_ip             = "10.10.20.120"
+
+  proxmox_api_url      = var.proxmox_api_url
+  proxmox_api_token    = var.proxmox_api_token
+  proxmox_insecure     = var.proxmox_insecure
 
   network_interfaces = [
     { bridge = "vmbr0", vlan = 20 }, # k8s-mgmt
@@ -70,6 +74,10 @@ module "worker_2" {
   k3s_master_ip = var.k3s_master_ip
   node_ip       = "10.10.20.121"
 
+  proxmox_api_url      = var.proxmox_api_url
+  proxmox_api_token    = var.proxmox_api_token
+  proxmox_insecure     = var.proxmox_insecure
+
   network_interfaces = [
     { bridge = "vmbr0", vlan = 20 },
     { bridge = "vmbr0", vlan = 30 },
@@ -103,6 +111,10 @@ module "gpu_worker" {
   k3s_token     = var.k3s_token
   k3s_master_ip = var.k3s_master_ip
   node_ip       = "10.10.20.130"
+
+  proxmox_api_url      = var.proxmox_api_url
+  proxmox_api_token    = var.proxmox_api_token
+  proxmox_insecure     = var.proxmox_insecure
 
   network_interfaces = [
     { bridge = "vmbr0", vlan = 20 },
