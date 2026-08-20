@@ -30,24 +30,24 @@ resource "random_password" "k3s_token" {
 module "master_1" {
   source = "../../"
 
-  create              = true
-  vm_id               = 100
-  name                = "k3s-master-1"
-  target_node         = "proxmox-node-1"
-  role                = "master"
-  cpu_cores           = 8
-  memory_mb           = 32768
-  disk_size_gb        = 100
-  storage             = "local-lvm"
+  create       = true
+  vm_id        = 100
+  name         = "k3s-master-1"
+  target_node  = "proxmox-node-1"
+  role         = "master"
+  cpu_cores    = 8
+  memory_mb    = 32768
+  disk_size_gb = 100
+  storage      = "local-lvm"
 
-  k3s_version         = "v1.29.6+k3s1"
-  k3s_token           = random_password.k3s_token.result
-  k3s_master_ip       = "10.10.20.110"
-  node_ip             = "10.10.20.110"
+  k3s_version   = "v1.29.6+k3s1"
+  k3s_token     = random_password.k3s_token.result
+  k3s_master_ip = "10.10.20.110"
+  node_ip       = "10.10.20.110"
 
-  proxmox_api_url      = var.proxmox_api_url
-  proxmox_api_token    = var.proxmox_api_token
-  proxmox_insecure     = var.proxmox_insecure
+  proxmox_api_url   = var.proxmox_api_url
+  proxmox_api_token = var.proxmox_api_token
+  proxmox_insecure  = var.proxmox_insecure
 
   network_interfaces = [
     { bridge = "vmbr0", vlan = 20 }, # k8s-mgmt
@@ -67,24 +67,24 @@ module "master_1" {
 module "master_2" {
   source = "../../"
 
-  create              = true
-  vm_id               = 101
-  name                = "k3s-master-2"
-  target_node         = "proxmox-node-2"
-  role                = "master"
-  cpu_cores           = 8
-  memory_mb           = 32768
-  disk_size_gb        = 100
-  storage             = "local-lvm"
+  create       = true
+  vm_id        = 101
+  name         = "k3s-master-2"
+  target_node  = "proxmox-node-2"
+  role         = "master"
+  cpu_cores    = 8
+  memory_mb    = 32768
+  disk_size_gb = 100
+  storage      = "local-lvm"
 
-  k3s_version         = "v1.29.6+k3s1"
-  k3s_token           = random_password.k3s_token.result
-  k3s_master_ip       = "10.10.20.110"
-  node_ip             = "10.10.20.111"
+  k3s_version   = "v1.29.6+k3s1"
+  k3s_token     = random_password.k3s_token.result
+  k3s_master_ip = "10.10.20.110"
+  node_ip       = "10.10.20.111"
 
-  proxmox_api_url      = var.proxmox_api_url
-  proxmox_api_token    = var.proxmox_api_token
-  proxmox_insecure     = var.proxmox_insecure
+  proxmox_api_url   = var.proxmox_api_url
+  proxmox_api_token = var.proxmox_api_token
+  proxmox_insecure  = var.proxmox_insecure
 
   network_interfaces = [
     { bridge = "vmbr0", vlan = 20 },
@@ -104,24 +104,24 @@ module "master_2" {
 module "master_3" {
   source = "../../"
 
-  create              = true
-  vm_id               = 102
-  name                = "k3s-master-3"
-  target_node         = "proxmox-node-3"
-  role                = "master"
-  cpu_cores           = 8
-  memory_mb           = 32768
-  disk_size_gb        = 100
-  storage             = "local-lvm"
+  create       = true
+  vm_id        = 102
+  name         = "k3s-master-3"
+  target_node  = "proxmox-node-3"
+  role         = "master"
+  cpu_cores    = 8
+  memory_mb    = 32768
+  disk_size_gb = 100
+  storage      = "local-lvm"
 
-  k3s_version         = "v1.29.6+k3s1"
-  k3s_token           = random_password.k3s_token.result
-  k3s_master_ip       = "10.10.20.110"
-  node_ip             = "10.10.20.112"
+  k3s_version   = "v1.29.6+k3s1"
+  k3s_token     = random_password.k3s_token.result
+  k3s_master_ip = "10.10.20.110"
+  node_ip       = "10.10.20.112"
 
-  proxmox_api_url      = var.proxmox_api_url
-  proxmox_api_token    = var.proxmox_api_token
-  proxmox_insecure     = var.proxmox_insecure
+  proxmox_api_url   = var.proxmox_api_url
+  proxmox_api_token = var.proxmox_api_token
+  proxmox_insecure  = var.proxmox_insecure
 
   network_interfaces = [
     { bridge = "vmbr0", vlan = 20 },
