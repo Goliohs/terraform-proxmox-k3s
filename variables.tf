@@ -3,13 +3,8 @@ variable "proxmox_api_url" {
   type        = string
 }
 
-variable "proxmox_user" {
-  description = "Proxmox API user (e.g., terraform@pam)"
-  type        = string
-}
-
-variable "proxmox_password" {
-  description = "Proxmox API password or token secret"
+variable "proxmox_api_token" {
+  description = "Proxmox API token (format: USER@REALM!TOKENID=UUID)"
   type        = string
   sensitive   = true
 }
@@ -143,7 +138,7 @@ variable "node_ip" {
 # Network configuration
 variable "network_interfaces" {
   description = "Network interfaces for the VM"
-  type = list(object({
+  type        = list(object({
     bridge   = string
     model    = optional(string, "virtio")
     vlan     = optional(number)
@@ -151,8 +146,8 @@ variable "network_interfaces" {
     firewall = optional(bool, false)
   }))
   default = [
-    { bridge = "vmbr0", vlan = 20 }, # k8s-mgmt VLAN
-    { bridge = "vmbr0", vlan = 30 }, # ceph-public VLAN
+    { bridge = "vmbr0", vlan = 20 },  # k8s-mgmt VLAN
+    { bridge = "vmbr0", vlan = 30 },  # ceph-public VLAN
   ]
 }
 
@@ -193,7 +188,7 @@ variable "search_domain" {
   default     = "k3s.local"
 }
 
-variable "onboot" {
+variable "on_boot" {
   description = "Start VM on boot"
   type        = bool
   default     = true
@@ -205,19 +200,19 @@ variable "agent" {
   default     = true
 }
 
-variable "tablet" {
+variable "tablet_device" {
   description = "Enable tablet device"
   type        = bool
   default     = true
 }
 
 variable "bios" {
-  description = "BIOS type (sea, ovmf)"
+  description = "BIOS type (seabios, ovmf)"
   type        = string
   default     = "ovmf"
   validation {
-    condition     = contains(["sea", "ovmf"], var.bios)
-    error_message = "BIOS must be 'sea' or 'ovmf'."
+    condition     = contains(["seabios", "ovmf"], var.bios)
+    error_message = "BIOS must be 'seabios' or 'ovmf'."
   }
 }
 

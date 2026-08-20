@@ -6,36 +6,35 @@ terraform {
   required_providers {
     proxmox = {
       source  = "bpg/proxmox"
-      version = "= 0.68.1"
+      version = "~> 0.111"
     }
   }
 }
 
 provider "proxmox" {
-  pm_api_url      = var.proxmox_api_url
-  pm_user         = var.proxmox_user
-  pm_password     = var.proxmox_password
-  pm_tls_insecure = var.proxmox_insecure
+  endpoint   = var.proxmox_api_url
+  insecure   = var.proxmox_insecure
+  api_token  = var.proxmox_api_token
 }
 
 # Worker 1
 module "worker_1" {
   source = "../../"
 
-  create       = true
-  vm_id        = 200
-  name         = "k3s-worker-1"
-  target_node  = "proxmox-node-1"
-  role         = "worker"
-  cpu_cores    = 16
-  memory_mb    = 65536
-  disk_size_gb = 200
-  storage      = "local-lvm"
+  create              = true
+  vm_id               = 200
+  name                = "k3s-worker-1"
+  target_node         = "proxmox-node-1"
+  role                = "worker"
+  cpu_cores           = 16
+  memory_mb           = 65536
+  disk_size_gb        = 200
+  storage             = "local-lvm"
 
-  k3s_version   = "v1.29.6+k3s1"
-  k3s_token     = var.k3s_token
-  k3s_master_ip = var.k3s_master_ip
-  node_ip       = "10.10.20.120"
+  k3s_version         = "v1.29.6+k3s1"
+  k3s_token           = var.k3s_token
+  k3s_master_ip       = var.k3s_master_ip
+  node_ip             = "10.10.20.120"
 
   network_interfaces = [
     { bridge = "vmbr0", vlan = 20 }, # k8s-mgmt
