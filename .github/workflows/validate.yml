@@ -67,11 +67,19 @@ jobs:
           tar -xzf terraform-docs.tar.gz
           sudo mv terraform-docs /usr/local/bin/
 
-      - name: Generate docs
+      - name: Generate docs (root)
         run: |
           terraform-docs markdown table --output-file README.md --output-mode inject .
-          terraform-docs markdown table --output-file examples/master/README.md --output-mode inject examples/master
-          terraform-docs markdown table --output-file examples/worker/README.md --output-mode inject examples/worker
+
+      - name: Generate docs (examples/master)
+        run: |
+          cd examples/master
+          terraform-docs markdown table --output-file README.md --output-mode inject .
+
+      - name: Generate docs (examples/worker)
+        run: |
+          cd examples/worker
+          terraform-docs markdown table --output-file README.md --output-mode inject .
 
       - name: Commit docs
         run: |
